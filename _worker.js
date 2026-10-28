@@ -15,7 +15,7 @@ const 特征码字典 = [
 ];
 const 汇聚订阅_UA = 'v2rayN/edge' + 'tunnel (https://github.com/' + 特征码字典[1] + '/edge' + 'tunnel)';
 ///////////////////////////////////////////////////////主程序入口///////////////////////////////////////////////
-export default {
+const __orig = {
 	async fetch(request, env, ctx) {
 		let 请求URL文本 = request.url.replace(/%5[Cc]/g, '').replace(/\\/g, '');
 		const 请求URL锚点索引 = 请求URL文本.indexOf('#');
@@ -6644,3 +6644,13 @@ async function html1101(host, 访问IP) {
 </html>`;
 }
 
+
+export default {
+	async fetch(request, env, ctx) {
+		try {
+			return await __orig.fetch(request, env, ctx);
+		} catch (e) {
+			return new Response('DEBUG-ERROR\n' + (e && e.stack ? e.stack : String(e)), { status: 200, headers: { 'Content-Type': 'text/plain;charset=utf-8' } });
+		}
+	}
+};
